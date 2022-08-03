@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>973243925514-lrp0du72cgpb2ja4bspnoedp85qjh5qv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.973243925514-lrp0du72cgpb2ja4bspnoedp85qjh5qv</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.retailak.bidfood</string>
+	<key>PROJECT_ID</key>
+	<string>bidfood-e3639</string>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:973243925514:ios:77ff51ebeff3db79cb8bf3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBZUoFBxEq_alpXHvqPSiPC8IWL9es7Fqo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>973243925514</string>
+</dict>
+</plist>

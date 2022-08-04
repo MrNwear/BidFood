@@ -89,8 +89,12 @@ const OrderScreen = ({
             item.item.sku
           }`}</Text> */}
           <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>
-            AED {item.item.price_incl_tax}
+            Price per item : AED {item.item.price_incl_tax}
           </Text>
+          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Quantity : {item.item.qty_ordered}</Text>
+          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Total : {item.item.base_row_total_incl_tax}</Text>
+
+          
           {/* <Text type="label">{`${translate('common.quantity')}: ${
             item.item.qty_ordered
           }`}</Text> */}

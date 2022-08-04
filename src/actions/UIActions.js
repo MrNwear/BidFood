@@ -92,7 +92,7 @@ export const updateCheckoutUI = (key, value) => ({
 export const updateAccountAddressUI = (key, value) => ({
   type: UI_ACCOUNT_CUSTOMER_DATA_UPDATE,
   payload: { key, value },
-});
+}); 
 
 export const accountAddressNextLoading = loading => ({
   type: UI_ACCOUNT_CUSTOMER_DATA_LOADING,

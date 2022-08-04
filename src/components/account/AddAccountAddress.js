@@ -78,11 +78,11 @@ class AddAccountAddress extends Component {
           region: regionData.region,
           regionId: regionData.region_id,
         };
-        this.updateUI('region', region);
+       // this.updateUI('region', region);
         this.updateUI('countryId', address.country_id);
         this.updateUI('street', address.street.length ? address.street[0] : '');
         this.updateUI('city', address.city);
-        this.updateUI('postcode', address.postcode);
+       // this.updateUI('postcode', address.postcode);
         this.updateUI('telephone', address.telephone);
         this.setState({ 'selectedCity': address.city });
         this.setState({ isLoading: false })

@@ -667,6 +667,7 @@ class CheckoutCustomerAccount extends Component {
           onChangeText={value => this.updateUI('street', value)}
           style={[
             styles.inputStyle,
+            {color:'#000'},
             errors['street']
               ? { borderWidth: 2, borderColor: 'red' }
               : undefined,
@@ -684,21 +685,22 @@ class CheckoutCustomerAccount extends Component {
           ]}
           selectionColor={'grey'}
         /> */}
-        {/* <CityDropDown
+         <CityDropDown
           selectedCity={this.state.selectedCity}
           onPressCity={city => {
             this.setState({ selectedCity: city });
             this.updateUI('city', city);
           }}
           hasError={errors['city']}
-        /> */}
-        <TextInput
+        /> 
+        {/* <TextInput
           editable={false}
           selectionColor={'grey'}
           // label={translate('common.firstName')}
           placeholderTextColor={'grey'}
           style={[
             styles.inputStyle,
+            {color:'#000'},
             errors['city']
               ? { borderWidth: 2, borderColor: 'red' }
               : undefined,
@@ -706,7 +708,7 @@ class CheckoutCustomerAccount extends Component {
           value={this.state.selectedCity}
         // placeholder={translate('common.firstName')}
         // onChangeText={value => this.updateUI('city', value)}
-        />
+        /> */}
         <TextInput
           value={this.props.telephone}
           keyboardType='numeric'
@@ -715,6 +717,7 @@ class CheckoutCustomerAccount extends Component {
           onChangeText={value => this.updateUI('telephone', value)}
           style={[
             styles.inputStyle,
+            {color:'#000'},
             errors['telephone']
               ? { borderWidth: 2, borderColor: 'red' }
               : undefined,

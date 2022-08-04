@@ -24,6 +24,7 @@ import { magentoOptions } from '../../config/magento';
 import { Card } from 'react-native-shadow-cards';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 export const ProductScreen = props => {
   const [defaultRating, setDefaultRating] = useState(4);
@@ -49,6 +50,7 @@ export const ProductScreen = props => {
   const [itemCount, setItemCount] = useState(1);
   const [isInStock, setInStock] = useState("false")
   const [region, setRegion] = useState("")
+  
   const { onPressAddToCart } = useAddToCart({
     product,
     cart,
@@ -112,6 +114,18 @@ export const ProductScreen = props => {
     ); /*The custom options are available on all product types. */
   }, []); // eslint-disable-line
 
+    const quantityIncrement=()=>{
+      axios.get(`https://dev.bidfoodhome.ae/${region}/rest/V1/stockStatuses/${product.sku}`,{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}})
+      .then((response)=>{
+        if(response.data.qty >= itemCount+1)
+        setItemCount(itemCount + 1);
+        else{
+          alert('not enough quantity');
+        }
+      }
+      )
+
+    }
   useEffect(() => {
     setCurProduct(current[product.id]);
   }, [current, product.id]);
@@ -336,7 +350,7 @@ export const ProductScreen = props => {
           </View>
           <TouchableOpacity
             style={styles.counter}
-            onPress={() => setItemCount(itemCount + 1)}>
+            onPress={quantityIncrement}>
             <Icon
               name="plus"
               color="#8BC63E"

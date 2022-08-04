@@ -26,7 +26,7 @@ const ModalSelect = ({
   return (
     <View style={style}>
       <ModalSelector
-        disabled={true}
+        disabled={data.length===0}
         data={data}
         initValue={label}
         onChange={_onChange}>

@@ -20,7 +20,7 @@ class CreateNewAddressForm extends Component {
 
   state = {
     selectedCity: this.props.city ? this.props.city : 'Select Your City',
-    postcode: '', street: '', telephone: ''
+     street: '', telephone: '',apartment_villa_number:'',landmark:'',building_name:'',address_type:''
   };
   r = (x) => {
     console.log(x)
@@ -56,8 +56,11 @@ class CreateNewAddressForm extends Component {
       this.updateUI('countryId', address.country_id);
       this.updateUI('street', '');
       this.updateUI('city', address.city);
-      this.updateUI('postcode', '');
+      this.updateUI('apartment_villa_number', '');
       this.updateUI('telephone', '');
+      this.updateUI('building_name','');
+      this.updateUI('address_type','');
+      this.updateUI('landmark','');
     }
   }
 
@@ -65,9 +68,17 @@ class CreateNewAddressForm extends Component {
     const { countryId, city, region, customer } =
       this.props;
 
-    const { postcode, telephone, street } = this.state;
-
-
+    const { apartment_villa_number, telephone, street, landmark,address_type,building_name } = this.state;
+    alert(countryId);
+    // if(apartment_villa_number.length!==0 ||
+    //     telephone.length === 0 || 
+    //     street.length ===0 ||
+    //     address_type.length ===0 ||
+    //     building_name.length ===0)
+    //     {
+    //       alert('please fill the required fields');
+    //       return;
+    //     }
     const regionValue =
       typeof region === 'object'
         ? {
@@ -84,7 +95,6 @@ class CreateNewAddressForm extends Component {
       region: regionValue,
       country_id: countryId,
       street: [street],
-      postcode,
       City: city,
       // same_as_billing: 1,
       firstname: customer.firstname,
@@ -96,6 +106,10 @@ class CreateNewAddressForm extends Component {
       customer: {
         ...customer,
         addresses: previousAddresses,
+        "extension_attributes":{...customer.extension_attributes,apartment_villa_number,
+          landmark,
+          address_type,
+          building_name,}
       },
     };
 
@@ -125,7 +139,7 @@ class CreateNewAddressForm extends Component {
 
 
 
-    // this.props.resetAccountAddressUI();
+   //  this.props.resetAccountAddressUI();
 
     // addNewAddress(customer.id, data).then(()=>{
 
@@ -139,7 +153,7 @@ class CreateNewAddressForm extends Component {
 
   updateUI = (key, value) => {
     this.props.updateAccountAddressUI(key, value);
-  };
+  }; 
 
   countrySelect = (attributeId, optionValue) => {
     this.props.updateAccountAddressUI('countryId', optionValue);
@@ -272,19 +286,17 @@ class CreateNewAddressForm extends Component {
         <View style={styles.container(theme)}>
           {this.renderCountries()}
 
-          {this.renderRegions()}
-
+          {/* {this.renderRegions()} */}
           <TextInput
-            value={this.state.postcode}
-            placeholder={translate('common.postcode')}
+            value={this.state.address_type}
+            placeholder='eg. Home , Office , Custom'
             placeholderTextColor={'grey'}
             onChangeText={value => {
-              this.setState({ postcode: value })
+              this.setState({ address_type: value })
             }}
             style={styles.inputStyle}
             selectionColor={'grey'}
           />
-
           <TextInput
             value={this.state.street}
             placeholder={translate('common.street')}
@@ -295,6 +307,37 @@ class CreateNewAddressForm extends Component {
             style={styles.inputStyle}
             selectionColor={'grey'}
           />
+          <TextInput
+            value={this.state.apartment_villa_number}
+            placeholder={'apartment/villa number'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => {
+              this.setState({ apartment_villa_number: value })
+            }}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.state.building_name}
+            placeholder={'Building Name'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => {
+              this.setState({ building_name: value })
+            }}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.state.landmark}
+            placeholder={'Landmark ( Optional )'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => {
+              this.setState({ landmark: value })
+            }}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+
 
           {/* <TextInput
             value={this.state.selectedCity}

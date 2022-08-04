@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, TouchableOpacity, Alert, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Icon } from 'react-native-elements';
@@ -26,6 +26,8 @@ import {
   NAVIGATION_HOME_PRODUCT_PATH,
 } from '../../navigation/routes';
 import deleteIcon from '../../assets/cart/delete.png';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 
 const CartListItem = ({
   item,
@@ -41,11 +43,27 @@ const CartListItem = ({
   const theme = useContext(ThemeContext);
   const dispatch = useDispatch();
   const [tempcustomer, setTempcustomer] = useState(null);
-
+  const [store,setStore]=useState('');
   const [quantity, setQuantity] = useState(item.qty);
+
+  useEffect(()=>{
+    AsyncStorage.getItem('store').then(res => {
+    setStore(res);
+    })
+
+  },[])
   const increaseQuantity = () => {
-    setQuantity(quantity + 1);
-    performRemoveItem('update', quantity + 1);
+    axios.get(`https://dev.bidfoodhome.ae/${store}/rest/V1/stockStatuses/${item.sku}`,{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}})
+      .then((response)=>{
+        if(response.data.qty>=quantity+1){
+
+          setQuantity(quantity + 1);
+          performRemoveItem('update', quantity + 1);
+        }
+        else{
+          alert('the requested quantity is not available ');
+        }
+      })
   };
 
   const decraseQuantity = () => {
@@ -247,7 +265,7 @@ const CartListItem = ({
                 onPress={decraseQuantity}>
                 <Text style={styles.incrementDecrementText}>-</Text>
               </TouchableOpacity>
-              <Text> {item.qty} </Text>
+              <Text> {quantity} </Text>
               <TouchableOpacity
                 style={[
                   styles.incrementDecrement,

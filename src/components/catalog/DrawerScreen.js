@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
@@ -25,7 +25,7 @@ const DrawerScreen = props => {
   const [items, setItems] = useState(props.brands);
   const [avaiableInStock,setAvailableInStock]=useState(false);
   const theme = useContext(ThemeContext);
-
+  let bouncyCheckboxRef=null;
   // useEffect(() => {
   //   const { brands } = props;
     
@@ -100,11 +100,13 @@ const DrawerScreen = props => {
   } = styles;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginHorizontal:10 }}>
       <View style={container(theme)}>
         <View style={InputContainer(theme)}>
-          <Text type="heading" style={textStyle(theme)}>
-            Price:
+          <View>
+
+          <Text >
+            Min Price
           </Text>
           <Input
             containerStyle={minInputStyle}
@@ -112,20 +114,21 @@ const DrawerScreen = props => {
             value={minValue}
             keyboardType="numeric"
             onChangeText={minValue => setMinValue(minValue)}
-          />
-          <Text style={dashTextStyle(theme)}>-</Text>
+            />
+            </View>
+          <View >
+
+          <Text >Max Price</Text>
           <Input
             containerStyle={styles.maxInputStyle}
             value={maxValue}
             placeholder={translate('common.max')}
             keyboardType="numeric"
             onChangeText={maxValue => setMaxValue(maxValue)}
-          />
+            />
+            </View>
         </View>
         <View >
-          <Text type="heading" style={textStyle(theme)}>
-            Brand:
-          </Text>
           {/* <Input
             containerStyle={brandInputStyle}
             placeholder={translate('common.brand')}
@@ -133,16 +136,19 @@ const DrawerScreen = props => {
             keyboardType="default"
             onChangeText={brandValue => setBrandValue(brandValue)}
           /> */}
-          <View style={{minHeight: 300}}>
+          <View style={{minHeight:open? 300:0}}>
             <DropDownPicker
+             
               open={open}
               value={value}
               items={items}
+              placeholder='Brand Name'
               setOpen={setOpen}
               setValue={setValue}
               onSelectItem={(item) => {
                 onSetItem(item);
               }}
+              
               setItems={setItems}
               containerStyle={brandInputStyle}
               schema={{
@@ -150,22 +156,32 @@ const DrawerScreen = props => {
                 value: 'url_key'
               }}
             />
-            <BouncyCheckbox onPress={(isChecked) => {
-              setAvailableInStock(isChecked);}} text='Only Available in Stock' textStyle={{textDecorationLine:'none'}} isChecked={avaiableInStock} fillColor='green' disableBuiltInState  />
           </View>
+            <BouncyCheckbox onPress={(isChecked) => {
+              
+              setAvailableInStock(!avaiableInStock);}}
+               text='Only show in stock items' 
+               ref={(ref) => (bouncyCheckboxRef = ref)}
+               textStyle={{textDecorationLine:'none'}}
+              isChecked={avaiableInStock}
+              disableBuiltInState
+              style={{marginTop:10}}
+               fillColor='green'
+               innerIconStyle={{borderRadius:10}}
+                />
         </View>
 
         <View style={styles.buttonStyleWrap}>
-        <View >
-          <Pressable onPress={resetOnPress} style={styles.buttonStyle}>
-            <Text style={{ color: '#fff', fontSize: 20, fontWeight: '900' }}>
-              {'Reset'}
+        
+          <Pressable onPress={resetOnPress} style={[styles.buttonStyle,{backgroundColor:'#fff'}]}>
+            <Text style={{ color: '#000', fontSize: 20, fontWeight: '900' }}>
+              {'Clear'}
             </Text>
           </Pressable>
-        </View>
+        
           <Pressable onPress={onApplyPressed} style={styles.buttonStyle}>
             <Text style={{ color: '#fff', fontSize: 20, fontWeight: '900' }}>
-              {translate('common.apply')}
+              {'Submit'}
             </Text>
           </Pressable>
         </View>
@@ -183,38 +199,44 @@ const styles = StyleSheet.create({
   }),
   InputContainer: theme => ({
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent:'space-between',
     paddingVertical: theme.spacing.large,
   }),
   brandInputStyle: {
     width: '100%',
   },
   minInputStyle: {
-    width: 50,
+    width: 100,
   },
   maxInputStyle: {
-    width: 50,
+    width: 100,
   },
   textStyle: theme => ({
     paddingLeft: 50,
     paddingRight: theme.spacing.large,
     color: '#000',
     opacity: 0.7,
+    alignSelf:'center'
   }),
   dashTextStyle: theme => ({
+    alignSelf:'flex-start',
     paddingHorizontal: theme.spacing.large,
   }),
   buttonStyle: {
-    width: '100%',
+    width:'40%',
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#8BC63E',
+    borderRadius:10
   },
   buttonStyleWrap: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    
+    flexDirection:'row',
+    justifyContent:'space-around',
+    marginVertical:10,
+    marginTop:50,
+
   },
 });
 

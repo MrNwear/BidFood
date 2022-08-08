@@ -53,7 +53,7 @@ const Category = ({
         "position": 1,
         "level": 2,
         "product_count": 1121,
-        "children_data":categories[0].children_data
+        "children_data":[]
       },
       {
         "id":196,
@@ -68,9 +68,13 @@ const Category = ({
     ];
     filterData.map((item)=>{
       if (item.isActive) {
-        clubbedData = [...clubbedData, ...item.data];
+        item.data.map((item)=>{
+          if(item.is_active==true)
+          clubbedData = [...clubbedData, item];
+        })
       }
     });
+    
     return (
       <FlatList
         style={{ width: '100%', flex: 1, marginVertical: 15 }}
@@ -83,6 +87,7 @@ const Category = ({
   };
 
   const renderCategory = ({item}) =>{
+    console.log('categ', item);
     return(
       <TouchableOpacity
       onPress={() => onCategoryPress(item)}

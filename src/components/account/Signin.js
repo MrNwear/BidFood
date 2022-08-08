@@ -45,6 +45,7 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -53,6 +54,7 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
   const lastnameInputRef = useRef(null);
   const dayRef = useRef(null);
   const monthRef = useRef(null);
+  const yearRef=useRef(null);
   const emailInputRef = useRef(null);
   const phoneNumberInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -72,7 +74,7 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
         email,
         firstname,
         lastname,
-        "dob":`${day}-${month}`,
+        "dob":`${year}-${month}-${day}`,
         addresses: [{ telephone: phoneNumber }],
       },
       password,
@@ -85,19 +87,22 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
       phoneNumber.length === 0 ||
       confirmPassword.length === 0 ||
       day.length===0 ||
-      month.length ===0
+      month.length ===0 ||
+      year.length ===0
     ) {
       alert('Please fill all fields. All fields are mandatory');
       return;
     }
-    if(day >31 || month>12 ){
+    if(day >31 || month>12 || day<1 || month<0 || year <1800 ||  year >2022 ){
       alert('enter a valid birth date');
       return
     }
+
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
+
     
     _signIn(customer);
   };
@@ -334,8 +339,9 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
             style={styles.inputStyle}
           />
         </View>
-        <View style={[styles.inputContainer, { marginBottom: 27, justifyContent:'space-around' }]}>
-          <Text>{`Birth Date`}</Text>
+        <View style={[styles.inputContainer, { marginBottom: 27, justifyContent:'space-around' ,paddingHorizontal:3}]}>
+          <Text style={{color:'green'}}>{`Birth 
+Date`}</Text>
         <TextInput
             underlineColorAndroid="transparent"
             placeholder={'dd'}
@@ -353,7 +359,7 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
             onSubmitEditing={() => {
               monthRef.current.focus();
             }}
-            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'grey',marginVertical:10,marginHorizontal:5}}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:10,marginHorizontal:5,color: '#000000'}}
           />
           <TextInput
             underlineColorAndroid="transparent"
@@ -368,12 +374,31 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
             selectionColor="grey"
             ref={monthRef}
             blurOnSubmit={false}
+            keyboardType='numeric'
+            onSubmitEditing={() => {
+              yearRef.current.focus();
+            }}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000'}}
+          />
+          <TextInput
+            underlineColorAndroid="transparent"
+            placeholder={'yyyy'}
+            placeholderTextColor={'grey'}
+            autoCorrect={false}
+            value={year}
+            returnKeyType="next"
+            editable={!loading}
+            maxLength={4}
+            onChangeText={setYear}
+            selectionColor="grey"
+            ref={yearRef}
+            keyboardType='numeric'
+            blurOnSubmit={false}
             onSubmitEditing={() => {
               phoneNumberInputRef.current.focus();
             }}
-            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'grey',marginVertical:5,marginHorizontal:5}}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000'}}
           />
-
         </View>
 
         <View style={[styles.inputContainer, { marginBottom: 27 }]}>

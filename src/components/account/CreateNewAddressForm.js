@@ -19,7 +19,7 @@ class CreateNewAddressForm extends Component {
   static contextType = ThemeContext;
 
   state = {
-    selectedCity: this.props.city ? this.props.city : 'Select Your City',
+    selectedCity: this.props.city ? this.props.city : 'Select Your City',city:'Dubai',
      street: '', telephone: '',apartment_villa_number:'',landmark:'',building_name:'',address_type:''
   };
   r = (x) => {
@@ -69,16 +69,18 @@ class CreateNewAddressForm extends Component {
       this.props;
 
     const { apartment_villa_number, telephone, street, landmark,address_type,building_name } = this.state;
-    alert(countryId);
-    // if(apartment_villa_number.length!==0 ||
-    //     telephone.length === 0 || 
-    //     street.length ===0 ||
-    //     address_type.length ===0 ||
-    //     building_name.length ===0)
-    //     {
-    //       alert('please fill the required fields');
-    //       return;
-    //     }
+    // alert(countryId);
+     if(apartment_villa_number.length ===0 ||
+         telephone.length === 0 || 
+         street.length ===0 ||
+         address_type.length ===0 ||
+         building_name.length ===0 || 
+         this.state.selectedCity.length===0 ||
+         this.state.selectedCity==='Select Your City')
+         {
+           alert('please fill the required fields');
+           return;
+         }
     const regionValue =
       typeof region === 'object'
         ? {
@@ -95,21 +97,34 @@ class CreateNewAddressForm extends Component {
       region: regionValue,
       country_id: countryId,
       street: [street],
-      City: city,
+      City: this.state.selectedCity,
       // same_as_billing: 1,
       firstname: customer.firstname,
       lastname: customer.lastname,
       telephone,
+      "custom_attributes":[ {
+        "attribute_code": 'address_type',
+        "value": address_type
+    },
+  {
+      "attribute_code": "building_name",
+      "value": building_name
+  },
+  {
+      "attribute_code": "apartment_villa_number",
+      "value": apartment_villa_number
+  },
+  {
+      "attribute_code": "landmark",
+      "value": landmark
+  }, ]
     })
 
     const data = {
       customer: {
         ...customer,
         addresses: previousAddresses,
-        "extension_attributes":{...customer.extension_attributes,apartment_villa_number,
-          landmark,
-          address_type,
-          building_name,}
+       
       },
     };
 
@@ -273,7 +288,7 @@ class CreateNewAddressForm extends Component {
         label={label}
         attribute={translate('common.country')}
         value={translate('common.country')}
-        data={data}
+        data={[data[0]]}
         onChange={this.countrySelect}
       />
     );
@@ -309,7 +324,7 @@ class CreateNewAddressForm extends Component {
           />
           <TextInput
             value={this.state.apartment_villa_number}
-            placeholder={'apartment/villa number'}
+            placeholder={'Apartment/Villa number'}
             placeholderTextColor={'grey'}
             onChangeText={value => {
               this.setState({ apartment_villa_number: value })

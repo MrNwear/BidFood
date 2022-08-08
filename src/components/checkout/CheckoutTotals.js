@@ -43,6 +43,7 @@ import TimeToogle from './TimeToogle';
 import OrderLocation from './OrderLocation';
 import { magento } from '../../magento';
 import moment from 'moment';
+import axios from 'axios';
 
 class CheckoutTotals extends Component {
   static contextType = ThemeContext;
@@ -117,8 +118,17 @@ class CheckoutTotals extends Component {
         },
         email,
       };
+      console.log('order',JSON.stringify(payment));
       this.props.checkoutCustomerNextLoading(true);
       const order = await this.props.placeOrder(cartId, payment, customer);
+      this.props.checkoutCustomerNextLoading(false);
+      console.log(this.props.navigation.state.params.cart.id ," as " , this.state.orderCommentInput);
+      axios.post('https://dev.bidfoodhome.ae/rest/V1/ordercomment/addordercomment',{"quoteid":this.props.navigation.state.params.cart.id,"comment":this.state.orderCommentInput?this.state.orderCommentInput:""},{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}})
+      .then(response=>
+        console.log(JSON.stringify(response)))
+        .catch(error=>{
+          console.log('sending Comment Error',error);
+        })
       console.log("onPlacePressed ==> ", JSON.stringify(order))
       return order;
     }
@@ -212,6 +222,7 @@ class CheckoutTotals extends Component {
   }
 
   componentDidMount() {
+    console.log('last ======',JSON.stringify(this.props));
     if (this.props?.totals?.coupon_code) {
       this.setState({
         couponCodeInput: this.props?.totals?.coupon_code,

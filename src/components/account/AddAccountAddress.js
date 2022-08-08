@@ -82,7 +82,10 @@ class AddAccountAddress extends Component {
         this.updateUI('countryId', address.country_id);
         this.updateUI('street', address.street.length ? address.street[0] : '');
         this.updateUI('city', address.city);
-       // this.updateUI('postcode', address.postcode);
+        this.updateUI('apartment_villa_number', address.custom_attributes? address.custom_attributes[2].value:'');
+        this.updateUI('address_type', address.custom_attributes? address.custom_attributes[0].value:'');
+        this.updateUI('building_name', address.custom_attributes? address.custom_attributes[1].value:'');
+        this.updateUI('landmark', address.custom_attributes? address.custom_attributes[3].value:'');
         this.updateUI('telephone', address.telephone);
         this.setState({ 'selectedCity': address.city });
         this.setState({ isLoading: false })
@@ -96,7 +99,7 @@ class AddAccountAddress extends Component {
   }
 
   onNextPressed = () => {
-    const { postcode, countryId, city, street, region, customer, telephone } =
+    const { apartment_villa_number,landmark,address_type,building_name, countryId, city, street, region, customer, telephone } =
       this.props;
 
     
@@ -104,7 +107,16 @@ class AddAccountAddress extends Component {
 
     let allAddresses = this.props.customer.addresses;
 
-
+    if(apartment_villa_number.length ==0 ||
+      telephone.length === 0 || 
+      street.length ===0 ||
+      address_type.length ===0 ||
+      building_name.length ===0 
+    )
+      {
+        alert('please fill the required fields');
+        return;
+      }
 
     const regionValue =
       typeof region === 'object'
@@ -121,12 +133,28 @@ class AddAccountAddress extends Component {
       region: regionValue,
       country_id: countryId,
       street: [street],
-      postcode,
+      
       city,
       // same_as_billing: 1,
       firstname: customer.firstname,
       lastname: customer.lastname,
       telephone,
+      "custom_attributes":[ {
+        "attribute_code": 'address_type',
+        "value": address_type
+    },
+  {
+      "attribute_code": "building_name",
+      "value": building_name
+  },
+  {
+      "attribute_code": "apartment_villa_number",
+      "value": apartment_villa_number
+  },
+  {
+      "attribute_code": "landmark",
+      "value": landmark
+  }, ]
     }
 
     const data = {
@@ -283,7 +311,7 @@ class AddAccountAddress extends Component {
         label={label}
         attribute={translate('common.country')}
         value={translate('common.country')}
-        data={data}
+        data={[data[0]]}
         onChange={this.countrySelect}
       />
     );
@@ -296,13 +324,36 @@ class AddAccountAddress extends Component {
         {this.state.isLoading ? <View></View> : <View style={styles.container(theme)}>
           {this.renderCountries()}
 
-          {this.renderRegions()}
-
+          {/* {this.renderRegions()} */}
           <TextInput
-            value={this.props.postcode}
-            placeholder={translate('common.postcode')}
+            value={this.props.address_type}
+            placeholder={'Home , Office , Custom'}
             placeholderTextColor={'grey'}
-            onChangeText={value => this.updateUI('postcode', value)}
+            onChangeText={value => this.updateUI('address_type', value)}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.props.apartment_villa_number}
+            placeholder={'Apartment/Villa Number'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => this.updateUI('apartment_villa_number', value)}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.props.landmark}
+            placeholder={'Landmark ( Optional )'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => this.updateUI('landmark', value)}
+            style={styles.inputStyle}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.props.building_name}
+            placeholder={'Building Name'}
+            placeholderTextColor={'grey'}
+            onChangeText={value => this.updateUI('building_name', value)}
             style={styles.inputStyle}
             selectionColor={'grey'}
           />

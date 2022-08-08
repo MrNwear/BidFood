@@ -191,7 +191,10 @@ export default function MyAddreess({ navigation }) {
 
             {(customerAddresses != null && customerAddresses.length > 0) && <FlatList
                 data={customerAddresses}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }) =>
+                { 
+                    console.log(JSON.stringify(item));
+                    return(
                     <View>
 
                         <View style={styles.flatViewstyle}>
@@ -201,7 +204,7 @@ export default function MyAddreess({ navigation }) {
                                     icon={checkBoxChecked == index}
 
                                 />
-                                <Text style={styles.titleTextStyle}>{item.firstname} {item.lastname}</Text>
+                                <Text style={styles.titleTextStyle}>{item.custom_attributes?  (item.custom_attributes[0].value).toUpperCase(): 'HOME'}</Text>
                             </View>
 
 
@@ -243,7 +246,7 @@ export default function MyAddreess({ navigation }) {
                     </View>
 
 
-                )}
+                )}}
 
             />}
             <TouchableOpacity style={styles.BUTTON}

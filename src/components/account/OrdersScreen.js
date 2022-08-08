@@ -1,10 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { TouchableOpacity, View, FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { getOrdersForCustomer } from '../../actions';
-import { Text } from '../common';
+import { Spinner, Text } from '../common';
 import OrderListItem from './OrderListItem';
 import { ThemeContext } from '../../theme';
 import { translate } from '../../i18n';
@@ -19,9 +19,11 @@ const OrdersScreen = ({
   navigation,
 }) => {
   const theme = useContext(ThemeContext);
-
-  useEffect(() => {
-    _getOrdersForCustomer(customerId);
+  const [isLoading,setLoading]=useState(false);
+  useEffect(async() => {
+    setLoading(true);
+    await _getOrdersForCustomer(customerId);
+    setLoading(false);
   }, [_getOrdersForCustomer, customerId]);
 
   const onRefresh = () => {
@@ -41,6 +43,7 @@ const OrdersScreen = ({
         data={data}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={renderEmptyOrderList}
       />
     );
   };
@@ -61,10 +64,10 @@ const OrdersScreen = ({
     );
   };
 
-  if (orders && orders.length) {
-    return <View style={styles.container(theme)}>{renderOrderList()}</View>;
-  }
-  return renderEmptyOrderList();
+  // if (orders && orders.length) {
+    return (isLoading ?  <Spinner/>: <View style={styles.container(theme)}>{renderOrderList()}</View>);
+  // }
+  // return renderEmptyOrderList();
 };
 
 OrdersScreen.navigationOptions = () => ({

@@ -90,10 +90,10 @@ const CategoryDrill = ({
     dispatch(resetFilters());
     
     dispatch(setCurrentCategory({ category: navigation.state.params.selectedCategory }));
-    if(navigation.state.params.selectedCategory.id === 91){
-      setSelectedMoreFilter(null);
-      setSelectedIndex(0);
-    }
+    // if(navigation.state.params.selectedCategory.id === 91){
+    //   setSelectedMoreFilter(null);
+    //   setSelectedIndex(0);
+    // }
   }, [categoryTree.children_data, dispatch]);
 
   useEffect(() => {

@@ -357,7 +357,9 @@ export const getProductsForCategoryOrChild =
         sortOrder,
         filter,
       );
-      dispatch({ type: MAGENTO_GET_CATEGORY_PRODUCTS, payload });
+      console.log('pro',payload);
+      
+      dispatch({ type: MAGENTO_GET_CATEGORY_PRODUCTS, payload:{...payload, "items":payload.items.filter(item=>item.status===1)} });
       dispatch({ type: MAGENTO_LOAD_MORE_CATEGORY_PRODUCTS, payload: false });
       updateConfigurableProductsPrices(payload.items, dispatch);
     } catch (e) {
@@ -717,6 +719,7 @@ export const getOrdersForCustomer =
     } catch (error) {
       logError(error);
     }
+    
   };
 
 // Fetch product_data for product in OrderScreen

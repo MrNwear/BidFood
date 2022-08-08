@@ -174,13 +174,13 @@ const DrawerScreen = props => {
         <View style={styles.buttonStyleWrap}>
         
           <Pressable onPress={resetOnPress} style={[styles.buttonStyle,{backgroundColor:'#fff'}]}>
-            <Text style={{ color: '#000', fontSize: 20, fontWeight: '900' }}>
+            <Text style={{ color: '#000', fontSize: 16, fontWeight: '900' }}>
               {'Clear'}
             </Text>
           </Pressable>
         
           <Pressable onPress={onApplyPressed} style={styles.buttonStyle}>
-            <Text style={{ color: '#fff', fontSize: 20, fontWeight: '900' }}>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '900' }}>
               {'Submit'}
             </Text>
           </Pressable>
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   buttonStyleWrap: {
     
     flexDirection:'row',
-    justifyContent:'space-around',
+    justifyContent:'space-between',
     marginVertical:10,
     marginTop:50,
 

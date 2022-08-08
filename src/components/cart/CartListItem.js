@@ -310,7 +310,7 @@ const CartListItem = ({
             fontSize: 16,
             fontWeight: '600',
           }}>
-          Total: AED {(products && products[item.sku])? (products[item.sku].extension_attributes.price_with_vat * item.qty).toFixed(2):item.extension_attributes.price_with_vat * quantity}
+          Total: AED {(products && products[item.sku])? (products[item.sku].extension_attributes.price_with_vat * quantity).toFixed(2):item.extension_attributes.price_with_vat * quantity}
         </Text>
       </View>
     </View>

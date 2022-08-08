@@ -49,10 +49,10 @@ class CheckoutCustomerAccount extends Component {
 
 
 
-    AsyncStorage.getItem('storeCity').then((res) => {
-      this.setState({ selectedCity: res });
-      console.log("storeCity", "storeCity==> " + res);
-    })
+    // AsyncStorage.getItem('storeCity').then((res) => {
+    //   this.setState({ selectedCity: res });
+    //   console.log("storeCity", "storeCity==> " + res);
+    // })
 
     console.log('store Region', value)
     //  value.then((e)=>{
@@ -66,24 +66,29 @@ class CheckoutCustomerAccount extends Component {
     var data_val = store.getState().getAddress.getAddress;
     this.props.updateCheckoutUI('countryId', 'AE');
     this.setState({iscountryselected:true});
+    
     // if (!data_vall ){
 
     // }
-    AsyncStorage.getItem('storeCity').then((res) => {
-      this.setState({ selectedCity: res });
-      console.log("storeCity", "storeCity==> " + res);
-    })
     this.props.getCountries();
     this.props.setCustomerAccountInfoBoolean(false);
-    // Hardcode US
-    // this.props.updateCheckoutUI('countryId', 'US');
-    // Clear the error
+    
     this.props.updateCheckoutUI('error', false);
-    // Clear loading
     this.props.checkoutCustomerNextLoading(false);
-
+    
     const { customer } = this.props;
-    console.log('Customer ====> : ' + JSON.stringify(customer))
+    if(customer.addresses.length!==0){
+      this.setState({selectedCity:customer.addresses[0].city})
+    }
+    else{
+
+      AsyncStorage.getItem('storeCity').then((res) => {
+        this.setState({ selectedCity: res });
+        console.log("storeCity", "storeCity==> " + res);
+      })
+    }
+    
+    console.log('Customer ====> : ' + JSON.stringify(this.props))
     if (customer) {
       console.log('customer')
       this.updateUI('firstname', customer.firstname);
@@ -136,11 +141,10 @@ class CheckoutCustomerAccount extends Component {
 
   onNextPressed = async () => {
     if(this.state.iscountryselected){
-
       const {
         email,
         password,
-        postcode,
+        
         countryId,
         firstname,
         lastname,
@@ -215,7 +219,7 @@ class CheckoutCustomerAccount extends Component {
                         // company: 'test',
                         telephone,
                         // fax: 'test',
-                        postcode,
+                        
                         city,
                         firstname,
                         lastname,
@@ -251,6 +255,7 @@ class CheckoutCustomerAccount extends Component {
                               country: countryFiltered ? countryFiltered.full_name_locale : '',
                             };
                           }
+                          console.log(JSON.stringify(local));
                           
                           delete local.region_code;
                           delete local.region_id;
@@ -265,7 +270,9 @@ class CheckoutCustomerAccount extends Component {
                           });
                           this.setState({ errors: errors });
                           let obj = Object.values(errors).some(el => !!el);
+                        console.log(JSON.stringify(local));
                           if (!obj) {
+                            
                             this.props.checkoutCustomerNextLoading(true);
                             this.props.addGuestCartBillingAddress(cartId, address);
                             this.props.setCustomerAccountInfoBoolean(true);
@@ -280,7 +287,6 @@ class CheckoutCustomerAccount extends Component {
                         };
                         
                         countrySelect(attributeId, optionValue) {
-                          alert(optionValue);
                           this.props.updateCheckoutUI('countryId', 'AE');
                           this.setState({iscountryselected:true});
                         }
@@ -436,7 +442,7 @@ class CheckoutCustomerAccount extends Component {
           label={label}
           attribute={translate('common.country')}
           value={translate('common.country')}
-          data={data}
+          data={[data[0]]}
           onChange={this.countrySelect.bind(this)}
         />
       </View>
@@ -564,14 +570,14 @@ class CheckoutCustomerAccount extends Component {
                 }}>
                 {item.city}
               </Text>
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 16,
                   fontWeight: '600',
                   color: '#37474F',
                 }}>
                 {item.postcode}
-              </Text>
+              </Text> */}
             </View>
         </TouchableOpacity>
         )}/>
@@ -581,7 +587,8 @@ class CheckoutCustomerAccount extends Component {
 
   radioClick(item,id) {
     this.setState({
-      radioSelected: id
+      radioSelected: id,
+      selectedCity:item.city
     });
     this.updateUI('countryId', item.country_id);
     if (!item?.region?.region) {
@@ -596,7 +603,8 @@ class CheckoutCustomerAccount extends Component {
     } else {
       this.updateUI('street', item?.street.length ? item?.street[0] : '');
     };
-    this.updateUI('city', this.state.selectedCity);
+    console.log(JSON.stringify(item));
+    this.updateUI('city', item.city);
     if (!item?.postcode) {
       this.updateUI('postcode', '');
     }

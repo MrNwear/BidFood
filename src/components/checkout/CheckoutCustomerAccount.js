@@ -626,37 +626,7 @@ class CheckoutCustomerAccount extends Component {
       <View style={styles.container(theme)}>
 
         {this.renderSavedAddresses(radioSelected)}
-        <TouchableOpacity style={{
-        // position: "absolute",
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#8BC63E',
-        height: 40,
-        alignItems: 'center',
-        marginRight: '10%',
-        marginLeft: '10%',
-        borderRadius: 10,
-        marginBottom: 12
-
-    }}
-    onPress={()=>{
-      
-      this.props.navigation.navigate(NAVIGATION_NEW_ADDRESS_PATH)}}
-                >
-
-                <Text style={{
-        color: 'white',
-        fontWeight: 'bold',
-        marginLeft: 50
-    }}>Add New Address</Text>
-
-                <Image style={{
-        height: 12,
-        width: 12,
-        tintColor: 'white'
-    }} source={require('../../assets/Icons/add.png')} />
-
-            </TouchableOpacity>
+       
         
         {this.renderUser()}
 

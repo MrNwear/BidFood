@@ -269,14 +269,14 @@ export default magento => ({
 
   getProductsBy: searchCriteria => {
     const params = getParamsFromSearchCriterias(searchCriteria);
-    return magento.get('/V1/products', params, undefined, ADMIN_TYPE);
+    return magento.get('/all/V1/products', params, undefined, ADMIN_TYPE);
   },
 
   getProductsWithSearchCriteria: searchCriteria =>
-    magento.get('/V1/products', searchCriteria, undefined, ADMIN_TYPE),
+    magento.get('/all/V1/products', searchCriteria, undefined, ADMIN_TYPE),
 
   getProductBySku: sku =>
-    magento.get(`/V1/products/${sku}`, undefined, undefined, ADMIN_TYPE),
+    magento.get(`/all/V1/products/${sku}`, undefined, undefined, ADMIN_TYPE),
 
   getProductOptions: sku =>
     magento.get(

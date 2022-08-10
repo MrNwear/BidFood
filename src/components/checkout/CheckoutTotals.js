@@ -62,6 +62,7 @@ class CheckoutTotals extends Component {
 
 
   onPlacePressed = async () => {
+    
     if (this.state.selectedDate == false) {
       this.setState({ isProcessingOrder: true })
       this.setState({ error: 'Please Select Date' });
@@ -100,7 +101,7 @@ class CheckoutTotals extends Component {
         billingAddress: {
           countryId,
           region: magento.isCustomerLogin() ? region.region : region,
-          street: [street],
+          street: [`${this.props.customerBillingData?.address_type},${street},${this.props.customerBillingData?.building_name},${this.props.customerBillingData?.apartment_villa_number},${this.props.customerBillingData?.landmark}`],
           telephone,
           postcode,
           city,
@@ -116,7 +117,7 @@ class CheckoutTotals extends Component {
             rokanthemes_opc: {
               customer_shipping_date: moment(rawDate).format('MM/DD/YYYY HH:mm'),
               customer_shipping_comments: time,
-              order_comment: this.state.orderCommentInput,
+              order_comment: this.state.orderCommentInput?this.state.orderCommentInput:'',
             },
           },
         },
@@ -127,12 +128,12 @@ class CheckoutTotals extends Component {
       const order = await this.props.placeOrder(cartId, payment, customer);
       this.props.checkoutCustomerNextLoading(false);
       console.log(this.props.navigation.state.params.cart.id ," as " , this.state.orderCommentInput);
-      axios.post('https://dev.bidfoodhome.ae/rest/V1/ordercomment/addordercomment',{"quoteid":this.props.navigation.state.params.cart.id,"comment":this.state.orderCommentInput?this.state.orderCommentInput:""},{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}})
-      .then(response=>
-        console.log(JSON.stringify(response)))
-        .catch(error=>{
-          console.log('sending Comment Error',error);
-        })
+      // axios.post('https://dev.bidfoodhome.ae/rest/V1/ordercomment/addordercomment',{"quoteid":this.props.navigation.state.params.cart.id,"comment":this.state.orderCommentInput?this.state.orderCommentInput:""},{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}})
+      // .then(response=>
+      //   console.log(JSON.stringify(response)))
+      //   .catch(error=>{
+      //     console.log('sending Comment Error',error);
+      //   })
       console.log("onPlacePressed ==> ", JSON.stringify(order))
       return order;
     }
@@ -241,8 +242,8 @@ class CheckoutTotals extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("this.props.", JSON.stringify(this.props));
-    console.log("prevProps", JSON.stringify(prevProps))
+   // console.log("this.props.", JSON.stringify(this.props));
+   // console.log("prevProps", JSON.stringify(prevProps))
     if (this.props.orderId && this.props.orderId !== prevProps.orderId) {
       this.showPopup(
 

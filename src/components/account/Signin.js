@@ -264,9 +264,9 @@ const Signin = ({ loading, error, success, navigation, signIn: _signIn }) => {
             <TouchableOpacity onPress={onGoogleButtonPress}>
               <Image source={google} style={styles.socialIcon} />
             </TouchableOpacity>
-            {Platform.OS === 'ios' && <TouchableOpacity onPress={onAppleButtonPress}>
+            {/* {Platform.OS === 'ios' && <TouchableOpacity onPress={onAppleButtonPress}>
               <Image source={apple} style={styles.socialIcon} />
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
           </View>
         </View>
       </View>
@@ -359,7 +359,7 @@ Date`}</Text>
             onSubmitEditing={() => {
               monthRef.current.focus();
             }}
-            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:10,marginHorizontal:5,color: '#000000',textAlign:'center'}}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:10,marginHorizontal:5,color: '#000000',textAlign:'center',paddingVertical:5}}
           />
           <TextInput
             underlineColorAndroid="transparent"
@@ -378,7 +378,7 @@ Date`}</Text>
             onSubmitEditing={() => {
               yearRef.current.focus();
             }}
-            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000',textAlign:'center'}}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000',textAlign:'center',paddingVertical:5}}
           />
           <TextInput
             underlineColorAndroid="transparent"
@@ -397,7 +397,7 @@ Date`}</Text>
             onSubmitEditing={() => {
               phoneNumberInputRef.current.focus();
             }}
-            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000',textAlign:'center'}}
+            style={{width:'20%' , borderWidth:1,borderRadius:10,borderColor:'#AEAEAE',marginVertical:5,marginHorizontal:5,color: '#000000',textAlign:'center',paddingVertical:5}}
           />
         </View>
 

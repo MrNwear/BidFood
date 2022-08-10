@@ -101,7 +101,7 @@ const Category = ({
   }
 
   const onCategoryPress = (item) => {
-    console.log('Products ===> ' +  JSON.stringify(item))
+    //console.log('Products ===> ' +  JSON.stringify(item))
     
     dispatch(resetFilters());
     dispatch(setCurrentCategory({ category: item }));

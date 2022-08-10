@@ -7,7 +7,7 @@ export default magento => ({
     magento.post(`/V1/guest-carts/${cartId}/items`, item, GUEST_TYPE),
 
   getGuestCart: cartId =>
-    magento.get(`/V1/guest-carts/${cartId}`, undefined, undefined, GUEST_TYPE),
+    cartId?magento.get(`/V1/guest-carts/${cartId}`, undefined, undefined, GUEST_TYPE):null,
 
   addCouponToCart: (cartId, couponCode) =>
     magento.put(

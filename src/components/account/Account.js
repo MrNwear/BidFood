@@ -43,10 +43,10 @@ const Account = ({
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
-    console.log('hello 1')
+    // console.log('hello 1')
     // ComponentDidMount
     if (!customer) {
-      console.log('hello 2')
+      // console.log('hello 2')
       _currentCustomer();
     }
   }, [_currentCustomer, customer]);
@@ -63,6 +63,7 @@ const Account = ({
           region: regionData.region,
           regionId: regionData.region_id,
         };
+        console.log('eeeee',JSON.stringify(address));
         updateAccountAddressUI('region', region);
         updateAccountAddressUI('countryId', address.country_id);
         updateAccountAddressUI(

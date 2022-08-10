@@ -18,7 +18,7 @@ const ContactUs = () => {
   const linkedinUrl = 'https://ae.linkedin.com/company/bidfood-home';
   const privacyUrl = 'https://dev.bidfoodhome.ae/s44/our-privacy-policy';
   const terms_Conditions_Url = 'https://dev.bidfoodhome.ae/s44/term-conditions';
-  const email_Url = 'mailto:cxd@bidfoodme.com';
+  const email_Url = 'telesales.uae@bidfoodme.com';
 
   const initiateWhatsAppChat = () => {
     Linking.openURL(whatsappUrl).catch(() => {
@@ -30,9 +30,9 @@ const ContactUs = () => {
     let phoneNumber = '';
 
     if (Platform.OS === 'android') {
-      phoneNumber = 'tel:${+971 800 3210}';
+      phoneNumber = 'tel:${+97150 277 7304}';
     } else {
-      phoneNumber = 'telprompt:${+971 800 3210}';
+      phoneNumber = 'telprompt:${+97150 277 7304}';
     }
     Linking.openURL(phoneNumber);
   };

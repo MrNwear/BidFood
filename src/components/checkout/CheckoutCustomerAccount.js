@@ -37,6 +37,10 @@ class CheckoutCustomerAccount extends Component {
   state = {
     errors: {},
     selectedCity: '',
+    apartment_villa_number:'',
+    building_name:'',
+    address_type:'',
+    landmark:'',
     radioSelected: 0,
     iscountryselected:false
   };
@@ -67,9 +71,7 @@ class CheckoutCustomerAccount extends Component {
     this.props.updateCheckoutUI('countryId', 'AE');
     this.setState({iscountryselected:true});
     
-    // if (!data_vall ){
-
-    // }
+  
     this.props.getCountries();
     this.props.setCustomerAccountInfoBoolean(false);
     
@@ -78,7 +80,13 @@ class CheckoutCustomerAccount extends Component {
     
     const { customer } = this.props;
     if(customer.addresses.length!==0){
-      this.setState({selectedCity:customer.addresses[0].city})
+      this.setState({selectedCity:customer.addresses[0].city});
+      
+      this.setState({address_type:customer.addresses[0].custom_attributes[0]?.value || ''})
+      this.setState({building_name:customer.addresses[0].custom_attributes[1]?.value || ''})
+      this.setState({apartment_villa_number:customer.addresses[0].custom_attributes[2]?.value || ''})
+      this.setState({landmark:customer.addresses[0].custom_attributes[3]?.value || ''})
+      
     }
     else{
 
@@ -158,7 +166,7 @@ class CheckoutCustomerAccount extends Component {
         customer,
       } = this.props;
       
-      console.log('props', this.props)
+      console.log('props', JSON.stringify(this.props))
       
       // const getUserInfo = async () => {
         let regionId = await AsyncStorage.getItem("store")
@@ -209,9 +217,23 @@ class CheckoutCustomerAccount extends Component {
                         region: this.state.selectedCity,
                         region_id: (regionId.replace("s", "")),
                         region_code: this.state.selectedCity,
-                        
-                        
-                        
+                        "custom_attributes":[ {
+                          "attribute_code": 'address_type',
+                          "value": this.state.address_type
+                      },
+                    {
+                        "attribute_code": "building_name",
+                        "value": this.state.building_name
+                    },
+                    {
+                        "attribute_code": "apartment_villa_number",
+                        "value": this.state.apartment_villa_number
+                    },
+                    {
+                        "attribute_code": "landmark",
+                        "value": this.state.landmark
+                    }, ],
+                       
                         //  region_id: false,
                         // region_code: false,
                         country_id: countryId,
@@ -224,24 +246,9 @@ class CheckoutCustomerAccount extends Component {
                         firstname,
                         lastname,
                         
-                        // middlename: 'test',
-                        // prefix: 'test',
-                        // suffix: 'string',
-                        // vat_id: 'string',
-                        // customer_id: 0,
+                      
                         email,
                         same_as_billing: 1,
-                        // customer_address_id: 0,
-                        // save_in_address_book: 0,
-                        // "extension_attributes": {
-                          // 	"gift_registry_id": 0
-                          // },
-                          // "custom_attributes": [
-                            // 	{
-                              // 		"attribute_code": "string",
-                              // 		"value": "string"
-                              // 	}
-                              // ]
                             },
                             useForShipping: true,
                           };
@@ -255,8 +262,11 @@ class CheckoutCustomerAccount extends Component {
                               country: countryFiltered ? countryFiltered.full_name_locale : '',
                             };
                           }
-                          console.log(JSON.stringify(local));
-                          
+                          // console.log(JSON.stringify(local));
+                          this.props.updateCheckoutUI('address_type', this.state.address_type);
+                          this.props.updateCheckoutUI('apartment_villa_number', this.state.apartment_villa_number);
+                          this.props.updateCheckoutUI('building_name', this.state.building_name);
+                          this.props.updateCheckoutUI('landmark', this.state.landmark);
                           delete local.region_code;
                           delete local.region_id;
                           // delete local.region;
@@ -270,7 +280,7 @@ class CheckoutCustomerAccount extends Component {
                           });
                           this.setState({ errors: errors });
                           let obj = Object.values(errors).some(el => !!el);
-                        console.log(JSON.stringify(local));
+                       
                           if (!obj) {
                             
                             this.props.checkoutCustomerNextLoading(true);
@@ -611,6 +621,47 @@ class CheckoutCustomerAccount extends Component {
     else {
       this.updateUI('postcode', item?.postcode);
     };
+    
+    if(!item?.custom_attributes[2]){
+      
+      this.updateUI('apartment_villa_number', '');
+      this.setState({apartment_villa_number:''})
+    }
+    else{
+      this.updateUI('apartment_villa_number', item?.apartment_villa_number);
+      this.setState({apartment_villa_number:item.custom_attributes[2]?.value || ''})
+      
+    }
+    if(!item?.custom_attributes[1]){
+      
+      this.updateUI('building_name', '');
+      this.setState({building_name:''})
+    }
+    else{
+      this.updateUI('building_name', item?.building_name);
+      this.setState({building_name:item.custom_attributes[1]?.value || ''})
+      
+    }
+    if(!item?.custom_attributes[0]){
+      
+      this.updateUI('address_type', '');
+      this.setState({address_type:''})
+    }
+    else{
+      this.updateUI('address_type', item?.address_type);
+      this.setState({address_type:item.custom_attributes[0]?.value || ''})
+      
+    }
+    if(!item?.custom_attributes[3]){
+      
+      this.updateUI('landmark', '');
+      this.setState({landmark:''})
+    }
+    else{
+      this.updateUI('landmark', item?.landmark);
+      this.setState({landmark:item.custom_attributes[3]?.value || ''})
+      
+    }
     if (!item?.telephone) {
       this.updateUI('telephone', '');
     } else {
@@ -638,20 +689,6 @@ class CheckoutCustomerAccount extends Component {
 
         
 
-        <TextInput
-          value={this.props.street}
-          placeholder="Enter your Street"
-          placeholderTextColor={'grey'}
-          onChangeText={value => this.updateUI('street', value)}
-          style={[
-            styles.inputStyle,
-            {color:'#000'},
-            errors['street']
-              ? { borderWidth: 2, borderColor: 'red' }
-              : undefined,
-          ]}
-          selectionColor={'grey'}
-        />
 
         {/* <TextInput
           value={this.state.selectedCity}
@@ -671,6 +708,105 @@ class CheckoutCustomerAccount extends Component {
           }}
           hasError={errors['city']}
         /> 
+          
+           <TextInput
+             value={this.props.street}
+             placeholder="Street Name"
+             placeholderTextColor={'grey'}
+             onChangeText={value =>
+               
+               {
+                 this.setState({ street: value });
+                 this.updateUI('street', value)}
+                 
+               }
+             style={[
+               styles.inputStyle,
+               {color:'#000'},
+               errors['street']
+               ? { borderWidth: 2, borderColor: 'red' }
+               : undefined,
+             ]}
+             selectionColor={'grey'}
+           />
+          <TextInput
+            value={this.state.apartment_villa_number}
+            placeholder="Apartment/Villa Number"
+            placeholderTextColor={'grey'}
+            onChangeText={value => 
+              {
+  
+                this.updateUI('apartment_villa_number', value)
+                this.setState({ apartment_villa_number: value });
+  
+              }
+              }
+            style={[
+              styles.inputStyle,
+              {color:'#000'},
+              errors['apartment_villa_number']
+                ? { borderWidth: 2, borderColor: 'red' }
+                : undefined,
+            ]}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.state.address_type}
+            placeholder="Home , Office , Custom"
+            placeholderTextColor={'grey'}
+            onChangeText={value => 
+              {
+                this.updateUI('address_type', value);
+                this.setState({ address_type: value });
+  
+              } 
+            }
+            style={[
+              styles.inputStyle,
+              {color:'#000'},
+              errors['address_type']
+                ? { borderWidth: 2, borderColor: 'red' }
+                : undefined,
+            ]}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.state.building_name}
+            placeholder="Building Name"
+            placeholderTextColor={'grey'}
+            onChangeText={value => {
+              this.updateUI('building_name', value);
+              this.setState({ building_name: value });
+            }}
+            style={[
+              styles.inputStyle,
+              {color:'#000'},
+              errors['building_name']
+                ? { borderWidth: 2, borderColor: 'red' }
+                : undefined,
+            ]}
+            selectionColor={'grey'}
+          />
+          <TextInput
+            value={this.props.landmark}
+            placeholder="landmark (optional)"
+            placeholderTextColor={'grey'}
+            onChangeText={value =>
+              
+              {
+                this.setState({ landmark: value });
+                this.updateUI('landmark', value)}
+  
+              }
+            style={[
+              styles.inputStyle,
+              {color:'#000'},
+              errors['landmark']
+                ? { borderWidth: 2, borderColor: 'red' }
+                : undefined,
+            ]}
+            selectionColor={'grey'}
+          />
         {/* <TextInput
           editable={false}
           selectionColor={'grey'}

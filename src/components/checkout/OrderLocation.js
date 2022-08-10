@@ -20,6 +20,7 @@ const OrderLocation = ({
   const { postcode, street, city } = customerBillingData;
 
   useEffect(() => {
+    // console.log('heeeeeey',JSON.stringify(customerBillingData));
     if (!ui || !ui?.telephone) {
       getCountries();
       resetAccountAddressUI();
@@ -38,8 +39,9 @@ const OrderLocation = ({
           'street',
           address.street.length ? address.street[0] : '',
         );
+        
         updateAccountAddressUI('city', address.city);
-        updateAccountAddressUI('postcode', address.postcode);
+        updateAccountAddressUI('postcode', "address.postcode");
         updateAccountAddressUI('telephone', address.telephone);
       }
     }

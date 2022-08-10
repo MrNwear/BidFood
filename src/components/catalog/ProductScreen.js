@@ -67,7 +67,7 @@ export const ProductScreen = props => {
 
   useEffect(() => {
     AsyncStorage.getItem('store').then((res)=>{
-      console.log("Product", "Product ==> " + JSON.stringify(product));
+    //  console.log("Product", "Product ==> " + JSON.stringify(product));
       // console.log(" product.extension_attributes['is_in_stock_s44']",  product.extension_attributes['is_in_stock_s44'])
       // console.log(" product.extension_attributes['is_in_stock_s45']",  product.extension_attributes['is_in_stock_s45'])
       // console.log(" product.extension_attributes['is_in_stock']",  product.extension_attributes['is_in_stock'])

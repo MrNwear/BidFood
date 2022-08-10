@@ -89,8 +89,8 @@ const OrderScreen = ({
             item.item.sku
           }`}</Text> */}
           
-          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Quantity : {item.item.qty_ordered}</Text>
-          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Total : AED {(item.item.price_incl_tax*item.item.qty_ordered).toFixed(2)}</Text>
+          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Quantity : {item.item.qty_ordered || item.item.qty }</Text>
+          <Text style={{ fontSize: 16, paddingLeft: 10, color: '#F37A20' }}>Total : AED {(item.item.price_incl_tax*(item.item.qty_ordered || item.item.qty)).toFixed(2)}</Text>
 
           
           {/* <Text type="label">{`${translate('common.quantity')}: ${

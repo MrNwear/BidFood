@@ -212,9 +212,9 @@ const Login = ({ loading, error, success, navigation, auth: _auth, signIn: _sign
             <TouchableOpacity onPress={onGoogleButtonPress}>
               <Image source={google} style={styles.socialIcon} />
             </TouchableOpacity>
-            {Platform.OS === 'ios' && <TouchableOpacity onPress={onAppleButtonPress}>
+            {/* {Platform.OS === 'ios' && <TouchableOpacity onPress={onAppleButtonPress}>
               <Image source={apple} style={styles.socialIcon} />
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
           </View>
         </View>
       </View>

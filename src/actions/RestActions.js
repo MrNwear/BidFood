@@ -565,10 +565,11 @@ export const getCart =
 
             AsyncStorage.removeItem('cartId');
           }
-          let guest_cart = await magento.guest.getGuestCart(cartId);
-          console.log('gesssssssssst >>>>',JSON.stringify(guest_cart));
+          
+          let guest_cart = cartId ? await magento.guest.getGuestCart(cartId):[];
+          // console.log('gesssssssssst >>>>',JSON.stringify(guest_cart));
           cart = await magento.customer.getCustomerCart();
-          guest_cart.items.map(item=>{
+          guest_cart?.items?.map(item=>{
             dispatchAddToCart(dispatch,null, {"cartItem":{"sku":item.sku,"qty":item.qty,"quoteId":cart.id,"productOption":{"extensionAttributes":{"customOptions":[]}}}}, region);
           });
           cart = await magento.customer.getCustomerCart();
@@ -656,6 +657,7 @@ const dispatchAddToCart = async (dispatch, cartId, item, region) => {
     }
     dispatch(checkoutSetActiveSection(1));
     dispatch({ type: MAGENTO_ADD_TO_CART, payload: result });
+    if(cartId)
     dispatchGetGuestCart(dispatch, cartId);
   } catch (e) {
     logError(JSON.stringify(e));
@@ -671,6 +673,7 @@ const dispatchGetGuestCart = async (dispatch, cartId) => {
     if (magento.isCustomerLogin()) {
       data = await magento.customer.getCustomerCart();
     } else {
+      if(cartId)
       data = await magento.guest.getGuestCart(cartId);
     }
     dispatch({ type: MAGENTO_GET_CART, payload: data });
@@ -890,6 +893,7 @@ export const getGuestCartShippingMethods = cartId => async dispatch => {
     if (magento.isCustomerLogin()) {
       data = await magento.customer.getCartShippingMethods();
     } else {
+      if(cartId)
       data = await magento.guest.getGuestCartShippingMethods(cartId);
     }
     dispatch({ type: MAGENTO_GET_CART_SHIPPING_METHODS, payload: data });
@@ -906,6 +910,7 @@ export const addGuestCartShippingInfo = (cartId, address) => async dispatch => {
       data = await magento.customer.addCartShippingInfo(address);
     } else {
       // Returns shipping methods i.e COD/Pay by Card info
+      if(cartId)
       data = await magento.guest.getGuestCartShippingInformation(
         cartId,
         address,
@@ -928,6 +933,7 @@ export const getGuestCartPaymentMethods = cartId => async dispatch => {
     if (magento.isCustomerLogin()) {
       data = await magento.customer.getCartPaymentMethods();
     } else {
+      if(cartId)
       data = await magento.guest.getGuestCartPaymentMethods(cartId);
     }
     dispatch({ type: MAGENTO_GET_CART_PAYMENT_METHODS, payload: data });
@@ -978,6 +984,7 @@ export const placeOrder = (cartId, payment, customer) => async dispatch => {
   try {
     let orderId;
     if (magento.isCustomerLogin()) {
+      const comment=await  axios.post('https://dev.bidfoodhome.ae/rest/V1/ordercomment/addordercomment',{"quoteid":cartId,"comment":payment.paymentMethod.extension_attributes.rokanthemes_opc.order_comment},{headers:{'Authorization':'Bearer wb2s1euayoz8sszqdktjxxxd8ud7jwp1'}});
       orderId = await magento.customer.placeCartOrder(payment);
     } else {
       orderId = await magento.guest.placeGuestCartOrder(cartId, payment);
@@ -988,7 +995,6 @@ export const placeOrder = (cartId, payment, customer) => async dispatch => {
     //   `netsuitemagentoconnect/ordersync?id=${orderId}`,
     //   'POST',
     // );
-
     dispatch({ type: MAGENTO_PLACE_GUEST_CART_ORDER, payload: orderId });
     dispatch({ type: UI_CHECKOUT_CUSTOMER_NEXT_LOADING, payload: false });
     return orderId;
@@ -1133,6 +1139,7 @@ const dispatchGetCart = async (dispatch, cartId) => {
     if (magento.isCustomerLogin()) {
       data = await magento.customer.getCustomerCart();
     } else {
+      if(cartId)
       data = await magento.guest.getGuestCart(cartId);
     }
     dispatch({ type: MAGENTO_GET_CART, payload: data });

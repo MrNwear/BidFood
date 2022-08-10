@@ -23,6 +23,7 @@ export default function MyAddreess({ navigation }) {
     const [checkBoxChecked, setCheckBoxChecked] = useState();
 
     useEffect(() => {
+        getCustomerInfo();
         customerAddresses?.map((item) => {
 
             if (item.id == getAddressForCheckbox.id) {
@@ -85,7 +86,7 @@ export default function MyAddreess({ navigation }) {
                 // setCustomerAddresses(prevArray => [...prevArray, address])
             }
 
-            console.log("addresses size==>", testAddress.length)
+            // console.log("addresses size==>", testAddress.length)
             // setCustomerAddresses(testAddress)
 
             setCustomerAddresses([...testAddress])
@@ -181,7 +182,7 @@ export default function MyAddreess({ navigation }) {
 
     const onselectItem = async (item, index) => {
         setCheckBoxChecked(index);
-        console.log('item', item);
+        // console.log('item', item);
         dispatch(get_Address_detail(item))
     }
 
@@ -192,7 +193,7 @@ export default function MyAddreess({ navigation }) {
             {(customerAddresses != null && customerAddresses.length > 0) && <FlatList
                 data={customerAddresses}
                 renderItem={({ item, index }) =>
-                { 
+                {
                     console.log(JSON.stringify(item));
                     return(
                     <View>

@@ -14,6 +14,7 @@ import { translate } from '../../i18n';
 import { CityDropDown } from '../common/CityDropDown';
 import AsyncStorage from '@react-native-community/async-storage';
 import NavigationService from '../../navigation/NavigationService';
+import {NAVIGATION_MY_ADDRESSES} from "../../navigation/routes";
 
 class CreateNewAddressForm extends Component {
   static contextType = ThemeContext;
@@ -71,10 +72,10 @@ class CreateNewAddressForm extends Component {
     const { apartment_villa_number, telephone, street, landmark,address_type,building_name } = this.state;
     // alert(countryId);
      if(apartment_villa_number.length ===0 ||
-         telephone.length === 0 || 
+         telephone.length === 0 ||
          street.length ===0 ||
          address_type.length ===0 ||
-         building_name.length ===0 || 
+         building_name.length ===0 ||
          this.state.selectedCity.length===0 ||
          this.state.selectedCity==='Select Your City')
          {
@@ -124,7 +125,7 @@ class CreateNewAddressForm extends Component {
       customer: {
         ...customer,
         addresses: previousAddresses,
-       
+
       },
     };
 
@@ -134,7 +135,7 @@ class CreateNewAddressForm extends Component {
       console.log("addNewAddress(c==> ", result);
 
       alert(
-        
+
         (result) ? "Address added successfully!" : "Address not added!",
         [
 
@@ -147,6 +148,9 @@ class CreateNewAddressForm extends Component {
           }
         ]
       );
+      if(result==true){
+        NavigationService.navigate(NAVIGATION_MY_ADDRESSES)
+      }
 
     });
 
@@ -168,7 +172,7 @@ class CreateNewAddressForm extends Component {
 
   updateUI = (key, value) => {
     this.props.updateAccountAddressUI(key, value);
-  }; 
+  };
 
   countrySelect = (attributeId, optionValue) => {
     this.props.updateAccountAddressUI('countryId', optionValue);
@@ -200,6 +204,7 @@ class CreateNewAddressForm extends Component {
         {translate('common.update')}
       </Button>
     );
+
   };
 
   renderRegions = () => {
@@ -301,7 +306,7 @@ class CreateNewAddressForm extends Component {
         <View style={styles.container(theme)}>
           {this.renderCountries()}
 
-          {/* {this.renderRegions()} */}
+           {/*{this.renderRegions()}*/}
           <TextInput
             value={this.state.address_type}
             placeholder='eg. Home , Office , Custom'
@@ -359,7 +364,7 @@ class CreateNewAddressForm extends Component {
             placeholder={translate('common.city')}
             onChangeText={value => this.updateUI('city', value)}
             style={styles.inputStyle}
-            editable={false} 
+            editable={false}
             selectTextOnFocus={false}
             selectionColor={'grey'}
           /> */}
@@ -382,8 +387,8 @@ class CreateNewAddressForm extends Component {
             style={styles.inputStyle}
             selectionColor={'grey'}
           />
-          {/* <Checkbox 
-          Icn={this.r()} 
+          {/* <Checkbox
+          Icn={this.r()}
 
           /> */}
 

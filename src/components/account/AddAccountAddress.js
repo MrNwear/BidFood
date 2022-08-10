@@ -102,16 +102,16 @@ class AddAccountAddress extends Component {
     const { apartment_villa_number,landmark,address_type,building_name, countryId, city, street, region, customer, telephone } =
       this.props;
 
-    
+
     console.log('address',this.props)
 
     let allAddresses = this.props.customer.addresses;
 
     if(apartment_villa_number.length ==0 ||
-      telephone.length === 0 || 
+      telephone.length === 0 ||
       street.length ===0 ||
       address_type.length ===0 ||
-      building_name.length ===0 
+      building_name.length ===0
     )
       {
         alert('please fill the required fields');
@@ -133,7 +133,7 @@ class AddAccountAddress extends Component {
       region: regionValue,
       country_id: countryId,
       street: [street],
-      
+
       city,
       // same_as_billing: 1,
       firstname: customer.firstname,
@@ -172,7 +172,7 @@ class AddAccountAddress extends Component {
       console.log("addNewAddress(c==> ", result);
 
       alert(
-        
+
         (result) ? "Address updated successfully!" : "Address not updated!",
         [
 
@@ -367,15 +367,15 @@ class AddAccountAddress extends Component {
             selectionColor={'grey'}
           />
 
-          {/* <TextInput
-            value={this.state.selectedCity}
-            placeholder={translate('common.city')}
-            onChangeText={value => this.updateUI('city', value)}
-            style={styles.inputStyle}
-            editable={false} 
-            selectTextOnFocus={false}
-            selectionColor={'grey'}
-          /> */}
+          {/*<TextInput*/}
+          {/*  value={this.state.selectedCity}*/}
+          {/*  placeholder={translate('common.city')}*/}
+          {/*  onChangeText={value => this.updateUI('city', value)}*/}
+          {/*  style={styles.inputStyle}*/}
+          {/*  editable={false}*/}
+          {/*  selectTextOnFocus={false}*/}
+          {/*  selectionColor={'grey'}*/}
+          {/*/>*/}
           <CityDropDown
             selectedCity={this.state.selectedCity}
             onPressCity={city => {

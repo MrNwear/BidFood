@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  ScrollView,
+  ScrollView, AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button, Text } from '../common';
@@ -83,6 +83,9 @@ const Account = ({
   ]);
 
   const onLogoutPress = () => {
+    AsyncStorage.removeItem("cardNumber")
+    AsyncStorage.removeItem("cardDate")
+    AsyncStorage.removeItem("cvv")
     _logout();
   };
 

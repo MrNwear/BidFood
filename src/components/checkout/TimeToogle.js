@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import {View, Text, TouchableOpacity, Image, TextInput, StyleSheet} from 'react-native';
 import React from 'react';
 import { useState } from 'react';
 import calendar from '../../assets/cart/calendar.png';
@@ -7,9 +7,10 @@ import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import {
-  checkoutSetDeliveryTime,
-  checkoutSetDeliveryDate,
+    checkoutSetDeliveryTime,
+    checkoutSetDeliveryDate, resetAccountAddressUI,
 } from '../../actions';
+import {Spinner} from "../common";
 
 const Data = [
   // {
@@ -77,7 +78,9 @@ const getDaysInMonth = (month, year, disabledDays) => {
 
 const TimeToogle = props => {
   const minDate = moment().add(1, 'days').format('YYYY-MM-DD');
-  const DISABLED_DAYS = cityDisabledDays[props.selectedStore];
+  // const DISABLED_DAYS = cityDisabledDays[props.selectedStore];
+  const DISABLED_DAYS = cityDisabledDays[props.customerBillingData.city];
+  const  disabledDaysIndexes = ['Sat', 'Sun']
   const [show, setShow] = useState(false);
   const [selectedTime, setSelectedTime] = useState(1);
   const [calendarShow, setCalendarShow] = useState(false);
@@ -89,6 +92,65 @@ const TimeToogle = props => {
 
   const { checkoutSetDeliveryTime, checkoutSetDeliveryDate, selectedStore } =
     props;
+    console.log("DISABLED_DAYS:",DISABLED_DAYS)
+    const getDaysInMonths=(month, year, days)=> {
+        let pivot = moment().month(month).year(year).startOf('month')
+        const end = moment().month(month).year(year).endOf('month')
+
+        let dates = {}
+        const disabled = { disabled: true }
+        while(pivot.isBefore(end)) {
+            days.forEach((day) => {
+                dates[pivot.day(day).format("YYYY-MM-DD")] = disabled
+            })
+            pivot.add(7, 'days')
+        }
+
+        return dates
+    }
+
+    const renderTokenUI = () => (
+        <View style={[styles.totalsStyle, styles.spacingBetweenUI]}>
+            <View style={[{ flexDirection: 'row', width: '100%' }]}>
+                <TextInput
+                    editable={!this.props?.totals?.coupon_code}
+                    value={this.state.couponCodeInput}
+                    placeholder="Enter Discount Code"
+                    color="#000"
+                    placeholderTextColor="#000"
+                    selectionColor={'grey'}
+                    style={styles.inputBox}
+                    onChangeText={value => this.setState({ couponCodeInput: value })}
+                />
+                {this.props.couponLoading ? (
+                    <View style={{ width: 100 }}>
+                        <Spinner />
+                    </View>
+                ) : (
+                    // <Pressable style={styles.coupounButton} onPress={this.couponAction}>
+
+                    // </Pressable>
+                    <TouchableOpacity
+                        onPress={this.couponAction}
+                        style={{
+                            flex: 1,
+                            backgroundColor: '#8BC63E',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                        <Text style={{ color: '#fff', fontSize: 12 }}>
+                            {this.props?.totals?.coupon_code ? 'Cancel' : 'Apply Discount'}
+                        </Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+            {!!this.props.couponError?.length && (
+                <Text style={{ color: 'red', marginBottom: 10, textAlign: 'center' }}>
+                    {this.props.couponError}
+                </Text>
+            )}
+        </View>
+    );
 
   return (
     <View>
@@ -146,9 +208,11 @@ const TimeToogle = props => {
         {calendarShow ? (
           <View>
             <Calendar
+                // disabledDaysIndexes={disabledDaysIndexes}
               onMonthChange={date => {
                 setDisabledDays(
-                  getDaysInMonth(date.month - 1, date.year, DISABLED_DAYS),
+                    getDaysInMonths(date.month - 1, date.year, DISABLED_DAYS),
+                  // getDaysInMonths(date.month - 1, date.year, disabledDaysIndexes),
                 );
               }}
               enableSwipeMonths={true}
@@ -242,4 +306,6 @@ const mapStateToProps = ({ checkout, account }) => {
 export default connect(mapStateToProps, {
   checkoutSetDeliveryTime,
   checkoutSetDeliveryDate,
+    resetAccountAddressUI,
 })(TimeToogle);
+

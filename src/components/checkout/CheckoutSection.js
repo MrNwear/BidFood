@@ -34,7 +34,7 @@ const CheckoutSection = ({
         onPress={onPress}
         disabled={isDisabled}>
         <Text style={styles.leftText}>{title}</Text>
-        
+
       </TouchableOpacity>
       {renderExpanded()}
     </View>

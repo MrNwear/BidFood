@@ -12,7 +12,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Platform,
+  Platform, AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 import NavigationService from '../../navigation/NavigationService';
@@ -47,15 +47,19 @@ import axios from 'axios';
 
 class CheckoutTotals extends Component {
   static contextType = ThemeContext;
-  
+
 
   state = {
     couponCodeInput: '',
     isProcessingOrder: false,
     orderCommentInput: '',
     error: '',
-    selectedDate: false
+    selectedDate: false,
+    number:"",
+    cardDate:"",
+    cvv:""
   };
+
 
   onPlacePressed = async () => {
     if (this.state.selectedDate == false) {
@@ -134,9 +138,6 @@ class CheckoutTotals extends Component {
     }
   };
 
-  goHome = () => {
-    this.props.navigation.navigate(NAVIGATION_HOME_STACK_PATH);
-  };
 
   renderTotals() {
     const {
@@ -223,11 +224,20 @@ class CheckoutTotals extends Component {
 
   componentDidMount() {
     console.log('last ======',JSON.stringify(this.props));
+    this.saveCard();
     if (this.props?.totals?.coupon_code) {
       this.setState({
         couponCodeInput: this.props?.totals?.coupon_code,
       });
     }
+  }
+  async saveCard() {
+    const numbers = await AsyncStorage.getItem("cardNumber")
+    const date = await AsyncStorage.getItem("cardDate")
+    const cvvNumber = await AsyncStorage.getItem("cvv")
+    this.setState({number: numbers})
+    this.setState({cardDate: date})
+    this.setState({cvv: cvvNumber})
   }
 
   componentDidUpdate(prevProps) {
@@ -277,7 +287,7 @@ class CheckoutTotals extends Component {
     }
 
     let responseToken = await magento.guest.placeOrdersToken(params);
-    
+
     let responseVal =await magento.guestOrderRecord(responseToken,this.props.orderId);
     console.log('responseVal',responseVal)
 
@@ -340,7 +350,7 @@ class CheckoutTotals extends Component {
     <View style={styles.spacingBetweenUI}>
       <TimeToogle error={this.state.error} onPress={() => {
         this.setState({ selectedDate: true, error: '' })
-        }} />
+        }} customerBillingData={this.props.customerBillingData}/>
     </View>
   );
 
@@ -448,6 +458,7 @@ class CheckoutTotals extends Component {
     </View>
   );
 
+
   renderCardCheckout = () => {
     const theme = this.context;
     const {
@@ -532,15 +543,51 @@ class CheckoutTotals extends Component {
           <CardNumber
             style={styles.cardNumber}
             placeholderTextColor="#9898A0"
+            onEndEditing={(value)=>{
+              this.setState({number:value._dispatchInstances.memoizedProps.text})
+            }}
+            defaultValue={this.state.number}
           />
 
           <View style={styles.dateAndCode}>
             <ExpiryDate
               style={styles.expiryDate}
               placeholderTextColor="#9898A0"
+              onEndEditing={(value)=>{
+                console.log("value:",value._dispatchInstances.memoizedProps.value)
+                this.setState({cardDate:value._dispatchInstances.memoizedProps.value})
+              }}
+              defaultValue={this.state.cardDate}
             />
-            <Cvv style={styles.cvv} placeholderTextColor="#9898A0" />
+            <Cvv
+                style={styles.cvv}
+                placeholderTextColor="#9898A0"
+                onEndEditing={(value)=>{
+                  console.log("value:",value._dispatchInstances.memoizedProps.value)
+                  this.setState({cvv:value._dispatchInstances.memoizedProps.value})
+                }}
+                defaultValue={this.state.cvv}
+            />
           </View>
+          <TouchableOpacity style={styles.button} onPress={()=>{
+            AsyncStorage.setItem("cardNumber",this.state.number)
+            AsyncStorage.setItem("cardDate",this.state.cardDate)
+            AsyncStorage.setItem("cvv",this.state.cvv)
+            alert("Card is Saved!")
+          }}>
+            <Text style={styles.buttonText}>Save Card</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button1} onPress={()=>{
+            this.setState({number:""})
+            this.setState({cardDate:""})
+            this.setState({cvv:""})
+            AsyncStorage.removeItem("cardNumber")
+            AsyncStorage.removeItem("cardDate")
+            AsyncStorage.removeItem("cvv")
+            alert("Card is removed!")
+          }}>
+            <Text style={styles.buttonText}>Delete Card</Text>
+          </TouchableOpacity>
 
           {this.renderDateAndTime()}
 
@@ -673,9 +720,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#8BC63E',
   },
+  button1: {
+    height: 50,
+    borderRadius: 5,
+    justifyContent: 'center',
+    backgroundColor: '#ff0000',
+  },
   buttonText: {
     color: 'white',
     fontSize: 16,
+    alignSelf:'center'
   },
   buttonStyle: theme => ({
     marginVertical: theme.spacing.large,

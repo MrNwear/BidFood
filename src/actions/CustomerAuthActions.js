@@ -53,7 +53,7 @@ export const signIn = customer => async dispatch => {
         customer.customer.email,
         customer.password,
       );
-      console.log('token values==>', token);
+      // console.log('token values==>', token);
       if (token.message) {
         authFail(dispatch, token.message);
       } else {
@@ -72,7 +72,7 @@ export const auth = (username, password) => async (dispatch,getState) => {
   try {
     dispatch({ type: MAGENTO_AUTH_LOADING, payload: true });
     const response = await magento.guest.auth(username, password);
-    console.log('Tibu ===> ' + JSON.stringify(response));
+    // console.log('Tibu ===> ' + JSON.stringify(response));
     magento.setCustomerToken(response);
     if (response.message) {
       authFail(dispatch, response.message);

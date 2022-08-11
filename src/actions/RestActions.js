@@ -237,7 +237,7 @@ export const getHomeData = refreshing => async dispatch => {
 
     const value = await magento.getHomeData();
 
-    console.log("cmsBlock===> ", value)
+    // console.log("cmsBlock===> ", value)
 
     if (!value) {
       dispatch({ type: MAGENTO_UPDATE_REFRESHING_HOME_DATA, payload: false });
@@ -357,7 +357,7 @@ export const getProductsForCategoryOrChild =
         sortOrder,
         filter,
       );
-      console.log('pro',payload);
+      // console.log('pro',payload);
       
       dispatch({ type: MAGENTO_GET_CATEGORY_PRODUCTS, payload:{...payload, "items":payload.items.filter(item=>item.status===1)} });
       dispatch({ type: MAGENTO_LOAD_MORE_CATEGORY_PRODUCTS, payload: false });
@@ -433,7 +433,7 @@ export const getCustomOptions = (sku, id) => async dispatch => {
   try {
     const data = await magento.admin.getProductOptions(sku);
 
-    console.log('getCustomOptions', JSON.stringify(data));
+    // console.log('getCustomOptions', JSON.stringify(data));
 
 
     dispatch({ type: MAGENTO_GET_CUSTOM_OPTIONS, payload: { data, id } });
@@ -590,7 +590,7 @@ export const getCart =
           dispatch({ type: MAGENTO_CREATE_CART, payload: cartId });
         }
 
-        console.log('cart for redux',cart)
+        // console.log('cart for redux',cart)
         dispatch({ type: MAGENTO_GET_CART, payload: cart });
         dispatch({
           type: MAGENTO_UPDATE_REFRESHING_CART_ITEM_PRODUCT,
@@ -648,10 +648,10 @@ const dispatchAddToCart = async (dispatch, cartId, item, region) => {
   try {
     let result;
     if (magento.isCustomerLogin()) {
-      console.log("addToCartItem==> ", JSON.stringify(item));
+      // console.log("addToCartItem==> ", JSON.stringify(item));
       //alert(JSON.stringify(item));
       result = await magento.customer.addItemToCart(item, region);
-      console.log("addToCartOption==> ", JSON.stringify(result));
+      // console.log("addToCartOption==> ", JSON.stringify(result));
     } else {
       result = await magento.guest.addItemToCart(cartId, item, region);
     }
@@ -661,7 +661,7 @@ const dispatchAddToCart = async (dispatch, cartId, item, region) => {
     dispatchGetGuestCart(dispatch, cartId);
   } catch (e) {
     logError(JSON.stringify(e));
-    console.log("addToCartOption==> ", JSON.stringify(e));
+    // console.log("addToCartOption==> ", JSON.stringify(e));
     //alert(JSON.stringify(e));
     dispatch({ type: MAGENTO_ADD_TO_CART, payload: e });
   }

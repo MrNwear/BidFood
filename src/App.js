@@ -59,10 +59,10 @@ const App = () => {
     // return isRegionSelected;
 
     AsyncStorage.getItem('isRegionSelected').then(result => {
-      console.log(
-        'checkIsRegionSelected',
-        'checkIsRegionSelected==> ' + JSON.stringify(result),
-      );
+      // console.log(
+      //   'checkIsRegionSelected',
+      //   'checkIsRegionSelected==> ' + JSON.stringify(result),
+      // );
       defaultRoute =
         result === 'true' ? null : routes.NAVIGATION_EMIRATES_SELECTION_SCREEN;
 
@@ -72,10 +72,10 @@ const App = () => {
       // );
 
       AsyncStorage.getItem('store').then(res => {
-        console.log('storesPerEmirates', 'storesPerEmirates==> ' + res);
+        // console.log('storesPerEmirates', 'storesPerEmirates==> ' + res);
       });
       AsyncStorage.getItem('storeCity').then(res => {
-        console.log('storeCity', 'storeCity==> ' + res);
+        // console.log('storeCity', 'storeCity==> ' + res);
       });
 
       setLoading(false);
@@ -191,4 +191,4 @@ const App = () => {
 
 export default App;
 
-console.log('defaultRoute1222', defaultRoute);
+// console.log('defaultRoute1222', defaultRoute);

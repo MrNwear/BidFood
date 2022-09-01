@@ -48,5 +48,3 @@ This project is configured with redux and redux persist. Uses the version of rea
 
 
 PRs are welcome
-# bidFood
-# BidFood

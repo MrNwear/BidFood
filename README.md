@@ -46,13 +46,6 @@ This project is configured with redux and redux persist. Uses the version of rea
 
 9. Enjoy!!!
 
-## Contributing
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/pstibu-gmail"><img src="https://avatars.githubusercontent.com/u/43640110?v=3?s=100" width="100px;" alt=""/><br /><sub><b>Tibu Padmakumar</b></sub></a><br /> <a href="https://github.com/pstibu-gmail/wisecaller/commits?author=pstibu-gmail" title="Code">💻</a> <a href="https://github.com/pstibu-gmail/wisecaller/commits?author=pstibu-gmail" title="Documentation">📖</a> <a href="https://github.com/pstibu-gmail/wisecaller/pulls?q=is%3Apr+reviewed-by%3Apstibu-gmail" title="Reviewed Pull Requests">👀</a> <a href="#translation-pstibu-gmail" title="Translation">🌍</a> <a href="#talk-pstibu-gmail" title="Talks">📢</a> <a href="#question-pstibu-gmail" title="Answering Questions">💬</a> <a href="#tool-pstibu-gmail" title="Tools">🔧</a> <a href="#maintenance-pstibu-gmail" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://github.com/AkhilSobhana"><img src="https://avatars.githubusercontent.com/u/61876729?v=3?s=100" width="100px;" alt=""/><br /><sub><b>Akhil Sobhana</b></sub></a><br /> <a href="https://github.com/pstibu-gmail/wisecaller/commits?author=AkhilSobhana" title="Code">💻</a> <a href="https://github.com/pstibu-gmail/wisecaller/commits?author=AkhilSobhana" title="Documentation">📖</a> <a href="https://github.com/pstibu-gmail/wisecaller/pulls?q=is%3Apr+reviewed-by%3AAkhilSobhana" title="Reviewed Pull Requests">👀</a></td>
-  </tr>
- </table>
 
 PRs are welcome
 # bidFood
